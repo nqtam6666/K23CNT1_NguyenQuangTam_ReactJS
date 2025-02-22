@@ -1,13 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import IDAnalyzer from './App';
+import NqtApp from './NqtApp';
 import reportWebVitals from './reportWebVitals';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
+const Nqtroot = ReactDOM.createRoot(document.getElementById('Nqtroot'));
+Nqtroot.render(
   <React.StrictMode>
-    <IDAnalyzer />
+    <NqtApp />
   </React.StrictMode>
 );
 
