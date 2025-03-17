@@ -36,3 +36,39 @@
     transform: rotate(360deg);
   }
 }
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.navigation {
+  margin: 20px 0;
+}
+
+.nav-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  gap: 20px;
+}
+
+.nav-list li {
+  margin: 0;
+}
+
+.nav-list a {
+  text-decoration: none;
+  color: #333;
+  padding: 8px 16px;
+  transition: all 0.3s ease;
+}
+
+.nav-list a:hover {
+  background-color: #f0f0f0;
+  border-radius: 4px;
+}
+
+.content {
+  padding: 20px;
+  min-height: 200px;
+}
