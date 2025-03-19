@@ -1,64 +1,83 @@
-import React from 'react'
-
-import NqtAxiosUsers from '../api/Nqt_api'
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import NqtAxiosUsers from '../api/Nqt_api';
+import '../../src/App.css'; // Assuming App.css is in the same directory or adjust the path
 
 export default function NqtListUsers() {
-    const navigate = useNavigate();
-    const [NqtListUser, setNqtListUser] = useState([]);
-    const NqtGetAllUser = async()=>{
-        //Goi API lay du lieu
-        const Nqt_resp = await NqtAxiosUsers.get("/Nqt_users");
-        setNqtListUser(Nqt_resp.data);
-    }
-    
-    // Gọi API và lấy dữ liệu cho biến state (NqtListUser)
-    useEffect(()=>{
-        NqtGetAllUser()
-    },[])
+  const navigate = useNavigate();
+  const [nqtListUser, setNqtListUser] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
-    const NqtHandleUpdate = (NqtId)=>{
-        console.log("id:",NqtId);
-
-        navigate(`/edit-user/${NqtId}`);
+  const nqtGetAllUser = async () => {
+    setIsLoading(true);
+    try {
+      const nqtResp = await NqtAxiosUsers.get('/users');
+      setNqtListUser(nqtResp.data);
+    } catch (error) {
+      console.error('Error fetching users:', error);
+    } finally {
+      setIsLoading(false);
     }
-    const NqtHandleDelete = async (NqtId)=>{
-        await NqtAxiosUsers.delete("/Nqt_users/"+NqtId);
+  };
 
-        let NqtListUserDelete = NqtListUser.filter(x=>x.id !==NqtId);
-        setNqtListUser(NqtListUserDelete);
+  useEffect(() => {
+    nqtGetAllUser();
+  }, []);
+
+  const nqtHandleUpdate = (nqtId) => {
+    console.log('id:', nqtId);
+    navigate(`/edit-user/${nqtId}`);
+  };
+
+  const nqtHandleDelete = async (nqtId) => {
+    if (window.confirm('Bạn có chắc muốn xóa user này không?')) {
+      try {
+        await NqtAxiosUsers.delete(`/Nqt_users/${nqtId}`);
+        setNqtListUser(nqtListUser.filter((x) => x.id !== nqtId));
+      } catch (error) {
+        console.error('Error deleting user:', error);
+      }
     }
-    const NqtElementUser = NqtListUser.map((Nqt_user)=>{
-        return <tr key={Nqt_user.id}>
-            <td>{Nqt_user.id}</td>
-            <td>{Nqt_user.Nqt_name}</td>
-            <td>{Nqt_user.Nqt_email}</td>
-            <td>{Nqt_user.Nqt_phone}</td>
-            <td>{Nqt_user.Nqt_active?'Hoạt động':'Khóa'}</td>
-            <td>
-                <button onClick={()=>NqtHandleUpdate(Nqt_user.id)}>Update</button>
-                <button onClick={()=>NqtHandleDelete(Nqt_user.id)}>Delete</button>
-            </td>
-        </tr>
-    })
+  };
+
+  const nqtElementUser = nqtListUser.map((nqtUser) => (
+    <tr key={nqtUser.id}>
+      <td>{nqtUser.id}</td>
+      <td>{nqtUser.nqtFullName}</td>
+      <td>{nqtUser.nqtAge}</td>
+      <td>{nqtUser.nqtStatus ? 'Hoạt động' : 'Khóa'}</td>
+      <td>
+        <button className="update-btn" onClick={() => nqtHandleUpdate(nqtUser.id)}>
+          Update
+        </button>
+        <button className="delete-btn" onClick={() => nqtHandleDelete(nqtUser.id)}>
+          Delete
+        </button>
+      </td>
+    </tr>
+  ));
 
   return (
-    <div>
-        <table className='table table-bordered'>
-                <thead>
-                    <tr>
-                        <th>User ID</th>
-                        <th>Full Name</th>
-                        <th>Email</th>
-                        <th>Phone</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {NqtElementUser}
-                </tbody>
-            </table>
+    <div className="container">
+      <h2 className="header">Danh sách User</h2>
+      {isLoading ? (
+        <p className="loading">Đang tải...</p>
+      ) : nqtListUser.length === 0 ? (
+        <p className="no-data">Không có dữ liệu để hiển thị.</p>
+      ) : (
+        <table className="table">
+          <thead>
+            <tr>
+              <th>User ID</th>
+              <th>Full Name</th>
+              <th>Age</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>{nqtElementUser}</tbody>
+        </table>
+      )}
     </div>
-  )
+  );
 }
