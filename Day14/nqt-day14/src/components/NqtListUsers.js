@@ -6,7 +6,7 @@ export default function NqtListUsers() {
   const navigate = useNavigate();
   const [nqtListUser, setNqtListUser] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [alert, setAlert] = useState(null); // State for custom alerts
+  const [alert, setAlert] = useState(null);
 
   const nqtGetAllUser = async () => {
     setIsLoading(true);
@@ -28,7 +28,7 @@ export default function NqtListUsers() {
     console.log('id:', nqtId);
     navigate(`/edit-user/${nqtId}`);
     setAlert({ type: 'success', message: 'Đã chuyển đến trang cập nhật!' });
-    setTimeout(() => setAlert(null), 3000); // Auto-dismiss after 3 seconds
+    setTimeout(() => setAlert(null), 3000);
   };
 
   const nqtHandleDelete = async (nqtId) => {

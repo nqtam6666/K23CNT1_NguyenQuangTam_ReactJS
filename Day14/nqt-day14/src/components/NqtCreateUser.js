@@ -8,12 +8,11 @@ export default function NqtCreateUser() {
     nqt_name: "",
     nqt_email: "",
     nqt_phone: "",
-    nqt_active: true, // Mặc định là "Hoạt động"
+    nqt_active: true,
   });
   const [Nqt_errors, setNqt_errors] = useState({});
   const [Nqt_alert, setNqt_alert] = useState(null);
 
-  // Xử lý sự kiện thay đổi input
   const Nqt_handleChange = (e) => {
     const { name, value, type } = e.target;
     setNqt_formData({
@@ -22,7 +21,6 @@ export default function NqtCreateUser() {
     });
   };
 
-  // Kiểm tra dữ liệu trước khi gửi
   const validateForm = () => {
     let errors = {};
     if (!Nqt_formData.nqt_name.trim())
@@ -40,11 +38,9 @@ export default function NqtCreateUser() {
     setNqt_errors(errors);
     return Object.keys(errors).length === 0;
   };
-
-  // Xử lý khi submit form
   const Nqt_handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validateForm()) return; // Kiểm tra lỗi trước khi gửi dữ liệu
+    if (!validateForm()) return;
     console.log("Nqt_formData:", Nqt_formData);
 
     try {

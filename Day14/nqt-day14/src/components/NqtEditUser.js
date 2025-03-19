@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import NqtAxiosUsers from '../api/Nqt_api';
 
 export default function NqtEditUser() {
-  const { id } = useParams(); // Get user ID from URL
+  const { id } = useParams();  
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     nqt_name: '',
@@ -17,7 +17,7 @@ export default function NqtEditUser() {
     const fetchUser = async () => {
       try {
         const response = await NqtAxiosUsers.get(`/nqt_users/${id}`);
-        setFormData(response.data); // Assuming the API returns the user object
+        setFormData(response.data); 
       } catch (error) {
         console.error('Error fetching user:', error);
         setAlert({ type: 'danger', message: 'Lỗi khi tải thông tin user!' });
